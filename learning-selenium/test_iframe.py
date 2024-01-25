@@ -1,14 +1,29 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
-import time
-
 
 browser = webdriver.Chrome()
+browser.get("https://chercher.tech/practice/frames")
 browser.maximize_window()
-browser.implicitly_wait(20)
-browser.get("https://tbid.digital.salesforce.com/oauth2/aus5v9466wdqLdY0O697/v1/authorize?response_type=code&response_mode=query&nonce=c276d232-5570-43f6-8e99-3a1e75f94ce0&client_id=0oa5v93ebgAGqkFSn697&redirect_uri=https%3A%2F%2Fiis.digital.salesforce.com%2Fservices%2Foauth2%2Fcallback&state=eyJyZWZlcnJlciI6Imh0dHBzOi8vdHJhaWxoZWFkLnNhbGVzZm9yY2UuY29tLyIsImNsaWVudElkIjoiM01WRzlnOXJic1RrS25BWFJVX2hPTHZIUllqN0hTMWNzTjBMbGhPU2VCUnY1TnAybXhQdXJjSWZmQTVWMHpuOC51SUR0Ym1YeVNXbXhxX1hkQTh3eCIsInJlZGlyZWN0VXJpIjoiaHR0cHM6Ly90cmFpbGhlYWQuc2FsZXNmb3JjZS5jb20vYXV0aC90YmlkbG9naW4vY2FsbGJhY2s_cHJvbXB0PWxvZ2luJmxvY2FsZT1wdF9CUiIsInN0YXRlIjoiNjFlMjkxMWZmYmJiMGJmMGE0NThkNjkwN2EzYTkwMjRkNjIzZDQ0MTk5OTUwOTI0IiwiY29ycmVsYXRpb25JZCI6IjA1ODk2ZjAyLTc1ZTMtNDIzZC1hNTU0LTRhY2M5OTNkMGIxOSIsInN0YXJ0VGltZSI6MTcwNjEyMDgwODU2N30&scope=openid+email+profile&intent=login")
-browser.find_element(By.ID, "onetrust-accept-btn-handler").click()
-html = browser.find_element(By.CLASS_NAME, "lwc-idx-user-login")
-browser.switch_to.frame(html)
-time.sleep(20)
+browser.implicitly_wait(10)
+
+# access frame1
+iframe1 = browser.find_element(By.ID, "frame1")
+browser.switch_to.frame(iframe1)
+browser.find_element(By.XPATH, "//*[@id='topic']//following-sibling::input").send_keys("iframe1")
+
+# access frame3
+iframe3 = browser.find_element(By.ID, "frame3")
+browser.switch_to.frame(iframe3)
+browser.find_element(By.ID, "a").click()
+
+# back to default frame
+browser.switch_to.default_content()
+# access frame2
+iframe2 = browser.find_element(By.ID, "frame2")
+browser.switch_to.frame(iframe2)
+dropdown_animals = Select(browser.find_element(By.XPATH, "//select[@id='animals']"))
+dropdown_animals.select_by_value("avatar")
+time.sleep(3)
